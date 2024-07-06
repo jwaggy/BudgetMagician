@@ -1,0 +1,2 @@
+class BudgetMagicianException(Exception):
+    pass
