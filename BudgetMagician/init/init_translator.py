@@ -20,7 +20,7 @@ def init_translator(app: QApplication):
     if IS_FROZEN and IS_WINDOWS:
         qt_translations_path = str(PYINSTALLER_LIB_ROOT / "PySide6" / "Qt6" / "translations")
     else:
-        qt_translations_path = QLibraryInfo.location(QLibraryInfo.TranslationsPath)
+        qt_translations_path = QLibraryInfo.location(QLibraryInfo.LibraryPath.TranslationsPath)
 
     log.debug(f"Qt translations path: {qt_translations_path}")
 

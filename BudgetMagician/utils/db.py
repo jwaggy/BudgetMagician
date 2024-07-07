@@ -6,13 +6,14 @@ from alembic.config import Config
 from sqlalchemy import URL, create_engine
 from sqlalchemy.orm import scoped_session, sessionmaker, Session
 
+from BudgetMagician.exceptions import BudgetMagicianException
 from BudgetMagician.settings import DATABASE_DRIVER
 
 
 @contextmanager
 def get_magic_session(path: str) -> Generator[scoped_session[Session], Any, None]:
     if path == "":
-        raise ValueError("Path must not be an empty string")
+        raise BudgetMagicianException("Path must not be an empty string")
 
     url = URL.create(DATABASE_DRIVER, database=path)
 

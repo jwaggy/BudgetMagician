@@ -1,6 +1,7 @@
 import calendar
 import statistics
 from datetime import date
+from typing import Optional
 
 from PySide6 import QtPrintSupport
 from PySide6.QtCore import Slot, Signal, QDate, QModelIndex
@@ -50,11 +51,11 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.setupUi(self)
         self.budget_file = Settings().get("budget/name")
         self.budget_not_found_window = BudgetNotFound(self)
-        self.manage_accounts_window: ManageAccounts | None = None
-        self.manage_categories_window: ManageCategories | None = None
-        self.add_transactions_window: NewTransaction | None = None
-        self.make_a_transfer_window: MakeATransfer | None = None
-        self.reconcile_account_window: ReconcileAccount | None = None
+        self.manage_accounts_window: Optional[ManageAccounts] = None
+        self.manage_categories_window: Optional[ManageCategories] = None
+        self.add_transactions_window: Optional[NewTransaction] = None
+        self.make_a_transfer_window: Optional[MakeATransfer] = None
+        self.reconcile_account_window: Optional[ReconcileAccount] = None
         self.file_menu = None
         self.view_menu = None
         self.help_menu = None
@@ -301,55 +302,63 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         db: scoped_session[Session]
         with get_magic_session(self.budget_file) as db:
             income_budget_subcategory = db.execute(select(BudgetSubcategory.id).where(BudgetSubcategory.name == "Income")).first()
-            income_transactions_for_this_month = db.execute(
-                select(Transaction.amount).where(
-                    and_(
-                        Transaction.budget_subcategory_id == income_budget_subcategory.id,
-                        Transaction.date >= current_month_date,
-                        Transaction.date <= last_day_in_current_month_date,
+
+            if income_budget_subcategory is None:
+                self.not_budgeted.setText("-")
+                self.overspent.setText("-")
+                self.income.setText("-")
+                self.budgeted.setText("-")
+                self.available_to_budget.setText("Error")
+            else:
+                income_transactions_for_this_month = db.execute(
+                    select(Transaction.amount).where(
+                        and_(
+                            Transaction.budget_subcategory_id == income_budget_subcategory.id,
+                            Transaction.date >= current_month_date,
+                            Transaction.date <= last_day_in_current_month_date,
+                        )
                     )
-                )
-            ).all()
-            income_for_this_month = sum((transaction.amount for transaction in income_transactions_for_this_month))
-            income_transactions_for_last_month = db.execute(
-                select(Transaction.amount).where(
-                    and_(Transaction.budget_subcategory_id == income_budget_subcategory.id, Transaction.date >= last_month_date, Transaction.date <= last_day_in_last_month_date)
-                )
-            ).all()
-            income_for_last_month = sum((transaction.amount for transaction in income_transactions_for_last_month))
+                ).all()
+                income_for_this_month = sum((transaction.amount for transaction in income_transactions_for_this_month))
+                income_transactions_for_last_month = db.execute(
+                    select(Transaction.amount).where(
+                        and_(Transaction.budget_subcategory_id == income_budget_subcategory.id, Transaction.date >= last_month_date, Transaction.date <= last_day_in_last_month_date)
+                    )
+                ).all()
+                income_for_last_month = sum((transaction.amount for transaction in income_transactions_for_last_month))
 
-            budgeted_amounts_this_month = db.execute(select(Budget.budgeted).where(and_(Budget.date >= current_month_date, Budget.date <= last_day_in_current_month_date))).all()
-            budgeted_amount_this_month = sum((amount.budgeted for amount in budgeted_amounts_this_month))
-            budgeted_amounts_last_month = db.execute(select(Budget.budgeted).where(and_(Budget.date >= last_month_date, Budget.date <= last_day_in_last_month_date))).all()
-            budgeted_amount_last_month = sum((amount.budgeted for amount in budgeted_amounts_last_month))
+                budgeted_amounts_this_month = db.execute(select(Budget.budgeted).where(and_(Budget.date >= current_month_date, Budget.date <= last_day_in_current_month_date))).all()
+                budgeted_amount_this_month = sum((amount.budgeted for amount in budgeted_amounts_this_month))
+                budgeted_amounts_last_month = db.execute(select(Budget.budgeted).where(and_(Budget.date >= last_month_date, Budget.date <= last_day_in_last_month_date))).all()
+                budgeted_amount_last_month = sum((amount.budgeted for amount in budgeted_amounts_last_month))
 
-            available_to_budget_this_month = income_for_this_month - budgeted_amount_this_month
-            not_budgeted_last_month = income_for_last_month - budgeted_amount_last_month
+                available_to_budget_this_month = income_for_this_month - budgeted_amount_this_month
+                not_budgeted_last_month = income_for_last_month - budgeted_amount_last_month
 
-            transactions_for_last_month = db.execute(
-                select(Transaction.amount).where(
-                    and_(Transaction.budget_subcategory_id != income_budget_subcategory.id, Transaction.date >= last_month_date, Transaction.date <= last_day_in_last_month_date)
-                )
-            ).all()
-            expenses_for_last_month = sum((transaction.amount for transaction in transactions_for_last_month))
+                transactions_for_last_month = db.execute(
+                    select(Transaction.amount).where(
+                        and_(Transaction.budget_subcategory_id != income_budget_subcategory.id, Transaction.date >= last_month_date, Transaction.date <= last_day_in_last_month_date)
+                    )
+                ).all()
+                expenses_for_last_month = sum((transaction.amount for transaction in transactions_for_last_month))
 
-            if expenses_for_last_month >= 0:
-                overspent_for_last_month = 0
-            else:
-                overspent_for_last_month = budgeted_amount_last_month - expenses_for_last_month
+                if expenses_for_last_month >= 0:
+                    overspent_for_last_month = 0
+                else:
+                    overspent_for_last_month = budgeted_amount_last_month - expenses_for_last_month
 
-            self.not_budgeted.setText(f"{not_budgeted_last_month:.2f}")
-            self.overspent.setText(f"{overspent_for_last_month:.2f}")
-            self.income.setText(f"{income_for_this_month:.2f}")
-            self.budgeted.setText(f"{budgeted_amount_this_month:.2f}")
-            self.available_to_budget.setText(f"{available_to_budget_this_month:.2f}")
+                self.not_budgeted.setText(f"{not_budgeted_last_month:.2f}")
+                self.overspent.setText(f"{overspent_for_last_month:.2f}")
+                self.income.setText(f"{income_for_this_month:.2f}")
+                self.budgeted.setText(f"{budgeted_amount_this_month:.2f}")
+                self.available_to_budget.setText(f"{available_to_budget_this_month:.2f}")
 
-            if available_to_budget_this_month >= 0:
-                self.available_to_budget_label.setStyleSheet("color: black")
-                self.available_to_budget_label.setText(self.tr("Available to Budget"))
-            else:
-                self.available_to_budget_label.setStyleSheet("color: red")
-                self.available_to_budget_label.setText(self.tr("Over Budgeted"))
+                if available_to_budget_this_month >= 0:
+                    self.available_to_budget_label.setStyleSheet("color: black")
+                    self.available_to_budget_label.setText(self.tr("Available to Budget"))
+                else:
+                    self.available_to_budget_label.setStyleSheet("color: red")
+                    self.available_to_budget_label.setText(self.tr("Over Budgeted"))
 
     def get_reports_dates(self) -> None:
         starting_qdate = self.report_date_one.date()
@@ -626,7 +635,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.chart_viewer.setChart(chart)
 
     def append_transaction_to_transaction_table(self, idd: int):
-        model = self.transactions_table.model()
+        model: TransactionTableModel = self.transactions_table.model()
         index = len(model.rows)
         transaction_row = TransactionRow(idd, self.budget_file, self.manage_categories_window.categories_changed, self.add_transactions_window.payees_changed)
         transaction_row.delete_button.clicked.connect(self.remove_transaction_from_transaction_table)
@@ -652,7 +661,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                         self.append_transaction_to_transaction_table(row.id)
 
     def append_budget_subcategory_to_budget_table(self, idd: int, date_to_search: date):
-        model = self.budget_table.model()
+        model: BudgetTableModel = self.budget_table.model()
         index = len(model.rows)
         budget_subcategory_row = BudgetSubcategoryRow(idd, date_to_search, self.budget_file)
         budget_subcategory_row.amount.editingFinished.connect(self.fill_budget_bar)
@@ -688,7 +697,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
     @Slot()
     def remove_transaction_from_transaction_table(self):
-        model = self.transactions_table.model()
+        model: TransactionTableModel = self.transactions_table.model()
         index = None
         transaction_row: TransactionRow
 

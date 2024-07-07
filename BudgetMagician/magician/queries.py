@@ -1,4 +1,5 @@
 from datetime import datetime
+from typing import Union
 
 from sqlalchemy import select
 from sqlalchemy.orm import Session, scoped_session
@@ -31,7 +32,7 @@ def get_years_plus_five_for_combobox(path: str, model) -> dict[int, str]:
     return years_dict
 
 
-def get_names_list(path: str, model, on_budget: bool | None = None) -> list[str]:
+def get_names_list(path: str, model, on_budget: Union[bool, None] = None) -> list[str]:
     db: scoped_session[Session]
     with get_magic_session(path) as db:
         if model.__name__ == "BudgetCategory":
@@ -44,7 +45,7 @@ def get_names_list(path: str, model, on_budget: bool | None = None) -> list[str]
         return [row.name for row in rows]
 
 
-def get_ids_list(path: str, model, on_budget: bool | None = None) -> list[int]:
+def get_ids_list(path: str, model, on_budget: Union[bool, None] = None) -> list[int]:
     db: scoped_session[Session]
     with get_magic_session(path) as db:
         if model.__name__ == "BudgetCategory":
@@ -57,7 +58,7 @@ def get_ids_list(path: str, model, on_budget: bool | None = None) -> list[int]:
         return [row.id for row in rows]
 
 
-def get_list_of_accounts_with_totals(path: str, on_budget: bool) -> list[list[str | float]]:
+def get_list_of_accounts_with_totals(path: str, on_budget: bool) -> list[list[Union[str, float]]]:
     accounts_list = get_names_list(path, Account, on_budget)
     table_data = []
 

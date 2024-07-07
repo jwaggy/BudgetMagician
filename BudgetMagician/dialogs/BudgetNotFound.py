@@ -1,4 +1,5 @@
 from pathlib import Path
+from typing import Union
 
 import PySide6
 from PySide6 import QtCore
@@ -16,7 +17,7 @@ class BudgetNotFound(QDialog, Ui_BudgetNotFound):
 
     def __init__(self, parent):
         super().__init__(parent)
-        self.file_name = ("", "")
+        self.file_name: Union[tuple[str, str], tuple[str]] = ("", "")
         self.setupUi(self)
         self.setWindowFlag(Qt.WindowType.FramelessWindowHint)
         self.installEventFilter(self)

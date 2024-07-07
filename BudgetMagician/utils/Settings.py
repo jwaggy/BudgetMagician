@@ -5,6 +5,7 @@ from pathlib import Path
 
 from PySide6.QtCore import QSettings
 
+from BudgetMagician.exceptions import BudgetMagicianException
 from BudgetMagician.parameters.Language import get_system_language
 from BudgetMagician.utils.dir import get_app_data_dir
 
@@ -25,7 +26,7 @@ class _Settings:
     def __init__(self):
         settings_path = get_app_data_dir() / "settings.ini"
 
-        self.settings = QSettings(str(settings_path), QSettings.IniFormat)
+        self.settings = QSettings(str(settings_path), QSettings.Format.IniFormat)
 
         logging.getLogger("Settings").debug(f"Settings path: {settings_path}")
 
@@ -60,7 +61,7 @@ class _Settings:
         setting_type = type(_default_settings[setting_name])
 
         if setting_type != type(setting_value):
-            raise ValueError(f"Setting {setting_name} is of type {setting_type} but value is of type {type(setting_value)}.")
+            raise BudgetMagicianException(f"Setting {setting_name} is of type {setting_type} but value is of type {type(setting_value)}.")
 
         setting_value = self._get_storage_value(setting_value)
 
@@ -91,7 +92,3 @@ def Settings():
         SETTINGS = _Settings()
 
     return SETTINGS
-
-
-def default_field(setting_name):
-    return Field(default_factory=lambda: Settings().get(setting_name))

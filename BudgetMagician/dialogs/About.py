@@ -26,7 +26,7 @@ class About(QDialog, Ui_About):
         super().__init__(parent)
 
         self.setupUi(self)
-        self.setWindowFlag(Qt.FramelessWindowHint)
+        self.setWindowFlag(Qt.WindowType.FramelessWindowHint)
         self.version.setText(self.tr("Version: {}").format(__version__))
         self.app_name_title.setText(__display_name__)
         self.ok.clicked.connect(self.close)

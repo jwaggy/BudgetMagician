@@ -140,7 +140,7 @@ class ManageCategories(QDialog, Ui_ManageCategories):
         return super().open()
 
     def eventFilter(self, arg__1: PySide6.QtCore.QObject, arg__2: PySide6.QtCore.QEvent) -> bool:
-        if arg__1 == self.master_category_combo and arg__2.type() == QtCore.QEvent.Type.KeyPress:
+        if arg__1 is self.master_category_combo and arg__2.type() == QtCore.QEvent.Type.KeyPress:
             if arg__2.key() in (Qt.Key.Key_Return, Qt.Key.Key_Enter):
                 self.add_master_category()
                 return True

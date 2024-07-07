@@ -69,7 +69,9 @@ class BudgetSubcategoryRow:
 
         db: scoped_session[Session]
         with get_magic_session(self.budget_file) as db:
-            transactions = db.execute(select(Transaction.amount).where(and_(Transaction.budget_subcategory_id == self.id, Transaction.date >= self.date, Transaction.date <= max_date))).all()
+            transactions = db.execute(
+                select(Transaction.amount).where(and_(Transaction.budget_subcategory_id == self.id, Transaction.date >= self.date, Transaction.date <= max_date))
+            ).all()
 
             outflows_generator = (transaction.amount for transaction in transactions)
 
@@ -77,15 +79,14 @@ class BudgetSubcategoryRow:
 
     @Slot()
     def change_budgeted_amount(self):
-        new_amount = float(self.amount.text())
-        self.budgeted_amount = new_amount
+        self.budgeted_amount = self.amount.text()
 
         db: scoped_session[Session]
         with get_magic_session(self.budget_file) as db:
             budget = db.scalars(select(Budget).where(and_(Budget.budget_subcategory_id == self.id, Budget.date == self.date))).first()
 
             if budget is not None:
-                budget.budgeted = new_amount
+                budget.budgeted = float(self.budgeted_amount)
                 db.commit()
 
 
