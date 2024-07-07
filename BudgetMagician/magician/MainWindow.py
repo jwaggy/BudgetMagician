@@ -322,12 +322,16 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                 income_for_this_month = sum((transaction.amount for transaction in income_transactions_for_this_month))
                 income_transactions_for_last_month = db.execute(
                     select(Transaction.amount).where(
-                        and_(Transaction.budget_subcategory_id == income_budget_subcategory.id, Transaction.date >= last_month_date, Transaction.date <= last_day_in_last_month_date)
+                        and_(
+                            Transaction.budget_subcategory_id == income_budget_subcategory.id, Transaction.date >= last_month_date, Transaction.date <= last_day_in_last_month_date
+                        )
                     )
                 ).all()
                 income_for_last_month = sum((transaction.amount for transaction in income_transactions_for_last_month))
 
-                budgeted_amounts_this_month = db.execute(select(Budget.budgeted).where(and_(Budget.date >= current_month_date, Budget.date <= last_day_in_current_month_date))).all()
+                budgeted_amounts_this_month = db.execute(
+                    select(Budget.budgeted).where(and_(Budget.date >= current_month_date, Budget.date <= last_day_in_current_month_date))
+                ).all()
                 budgeted_amount_this_month = sum((amount.budgeted for amount in budgeted_amounts_this_month))
                 budgeted_amounts_last_month = db.execute(select(Budget.budgeted).where(and_(Budget.date >= last_month_date, Budget.date <= last_day_in_last_month_date))).all()
                 budgeted_amount_last_month = sum((amount.budgeted for amount in budgeted_amounts_last_month))
@@ -337,7 +341,9 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
                 transactions_for_last_month = db.execute(
                     select(Transaction.amount).where(
-                        and_(Transaction.budget_subcategory_id != income_budget_subcategory.id, Transaction.date >= last_month_date, Transaction.date <= last_day_in_last_month_date)
+                        and_(
+                            Transaction.budget_subcategory_id != income_budget_subcategory.id, Transaction.date >= last_month_date, Transaction.date <= last_day_in_last_month_date
+                        )
                     )
                 ).all()
                 expenses_for_last_month = sum((transaction.amount for transaction in transactions_for_last_month))
@@ -438,10 +444,9 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             for key in ABBREVIATED_MONTHS.keys():
                 max_day = calendar.monthrange(todays_date.year, key)[1]
                 rows = db.scalars(
-                    select(Transaction)
-                    .where(Transaction.date >= date(todays_date.year, key, 1))
-                    .where(Transaction.date <= date(todays_date.year, key, max_day))
-                    .filter_by(**kwargs)
+                    select(
+                        Transaction
+                    ).where(and_(Transaction.date >= date(todays_date.year, key, 1), Transaction.date <= date(todays_date.year, key, max_day))).filter_by(**kwargs)
                 ).all()
 
                 income = [row.amount for row in rows if row.budget_subcategory is not None and row.budget_subcategory.name == "Income"]
@@ -509,10 +514,9 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             for key in ABBREVIATED_MONTHS.keys():
                 max_day = calendar.monthrange(todays_date.year, key)[1]
                 rows = db.scalars(
-                    select(Transaction)
-                    .where(Transaction.date >= date(todays_date.year, key, 1))
-                    .where(Transaction.date <= date(todays_date.year, key, max_day))
-                    .filter_by(**kwargs)
+                    select(
+                        Transaction
+                    ).where(and_(Transaction.date >= date(todays_date.year, key, 1), Transaction.date <= date(todays_date.year, key, max_day))).filter_by(**kwargs)
                 ).all()
 
                 debts_sum = sum((abs(row.amount) for row in rows if row.budget_subcategory is not None and row.budget_subcategory.name != "Income"))
@@ -553,10 +557,9 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             for key in ABBREVIATED_MONTHS.keys():
                 max_day = calendar.monthrange(todays_date.year, key)[1]
                 rows = db.scalars(
-                    select(Transaction)
-                    .where(Transaction.date >= date(todays_date.year, key, 1))
-                    .where(Transaction.date <= date(todays_date.year, key, max_day))
-                    .filter_by(**kwargs)
+                    select(
+                        Transaction
+                    ).where(and_(Transaction.date >= date(todays_date.year, key, 1), Transaction.date <= date(todays_date.year, key, max_day))).filter_by(**kwargs)
                 ).all()
 
                 month_sum = sum((abs(row.amount) for row in rows if row.budget_subcategory is not None and row.budget_subcategory.name != "Income"))
@@ -587,7 +590,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
         db: scoped_session[Session]
         with get_magic_session(self.budget_file) as db:
-            rows = db.scalars(select(Transaction).where(Transaction.date >= starting_date).where(Transaction.date <= ending_date).filter_by(**kwargs)).all()
+            rows = db.scalars(select(Transaction).where(and_(Transaction.date >= starting_date, Transaction.date <= ending_date)).filter_by(**kwargs)).all()
 
             for row in rows:
                 if row.payee is None:
@@ -618,7 +621,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
         db: scoped_session[Session]
         with get_magic_session(self.budget_file) as db:
-            rows = db.scalars(select(Transaction).where(Transaction.date >= starting_date).where(Transaction.date <= ending_date).filter_by(**kwargs)).all()
+            rows = db.scalars(select(Transaction).where(and_(Transaction.date >= starting_date, Transaction.date <= ending_date)).filter_by(**kwargs)).all()
 
             for row in rows:
                 if row.budget_subcategory is None:
@@ -653,6 +656,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         db: scoped_session[Session]
         with get_magic_session(self.budget_file) as db:
             account = db.scalars(select(Account).where(Account.name == account_name)).first()
+
             if account is not None:
                 rows = db.execute(select(Transaction.id).where(Transaction.account == account).order_by(Transaction.date)).all()
 
@@ -820,6 +824,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.fill_report_account_combo()
         self.redraw_current_chart()
         self.fill_budget_bar()
+
         if self.current_account_name == account_name:
             accounts_list = get_names_list(self.budget_file, Account)
 
@@ -861,11 +866,11 @@ class MainWindow(QMainWindow, Ui_MainWindow):
     @Slot(QTableWidgetItem)
     def select_account(self, table_widget_item: QTableWidgetItem):
         account_name = table_widget_item.text()
+
         try:
             float(account_name)
         except ValueError:
             self.fill_balances_bar(account_name)
-
             self.account_name_label.setText(self.tr("Current Account: {}").format(account_name))
             self.transactions_table.setModel(TransactionTableModel())
             self.preload_transactions_table(account_name)
