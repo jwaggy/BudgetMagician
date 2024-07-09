@@ -1,0 +1,19 @@
+<!DOCTYPE RCC><RCC version="1.0">
+    <qresource>
+        <file>icons/flags/en_US.svg</file>
+        <file>icons/flags/en_ES.svg</file>
+        <file>icons/lucide/arrow-right-circle.svg</file>
+        <file>icons/lucide/arrow-right-left.svg</file>
+        <file>icons/lucide/chevron-down.svg</file>
+        <file>icons/lucide/delete.svg</file>
+        <file>icons/lucide/equal.png</file>
+        <file>icons/lucide/folder-open.svg</file>
+        <file>icons/lucide/log-out.svg</file>
+        <file>icons/lucide/plus.png</file>
+        <file>icons/lucide/plus-circle.svg</file>
+        <file>icons/lucide/settings.svg</file>
+        <file>icons/feather/printer.svg</file>
+        <file>misc/CHANGELOG.md</file>
+        <file>misc/PRIVACY.md</file>
+    </qresource>
+</RCC>
