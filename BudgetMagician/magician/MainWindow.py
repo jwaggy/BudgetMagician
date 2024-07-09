@@ -225,6 +225,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
     def fill_date_edits(self):
         current_date = date.today()
+        print(current_date)
 
         self.report_date_one.setDate(QDate(current_date.year, 1, 1))
         self.report_date_two.setDate(QDate(current_date.year, current_date.month, current_date.day))

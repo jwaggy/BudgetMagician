@@ -6,17 +6,29 @@ readonly scripts_dir="$root_dir/scripts"
 readonly build_dir="$root_dir/build"
 readonly dist_dir="$root_dir/dist"
 readonly app_module="BudgetMagician"
-readonly app_base_dir=$(realpath "./$app_module")
+app_base_dir=$(realpath "./$app_module")
+readonly app_base_dir
 readonly app_repo_slug="jwaggy/BudgetMagician"
-readonly app_display_name=$(sed -n 's/__display_name__ = "\([^"]*\).*/\1/p' "$app_base_dir/version.py")
-readonly app_name=$(sed -n 's/__app_name__ = "\([^"]*\).*/\1/p' "$app_base_dir/version.py")
-readonly app_id=$(sed -n 's/__app_id__ = "\([^"]*\).*/\1/p' "$app_base_dir/version.py")
-readonly app_version=$(sed -n 's/__version__ = "\([^"]*\).*/\1/p' "$app_base_dir/version.py")
-readonly app_version_date=$(sed -n 's/__version_date__ = "\([^"]*\).*/\1/p' "$app_base_dir/version.py")
-readonly app_author=$(sed -n 's/__author_name__ = "\([^"]*\).*/\1/p' "$app_base_dir/version.py")
-readonly app_author_contact=$(sed -n 's/__author_contact__ = "\([^"]*\).*/\1/p' "$app_base_dir/version.py")
-readonly app_url=$(sed -n 's/__app_url__ = "\([^"]*\).*/\1/p' "$app_base_dir/version.py")
-readonly app_bugtracker_url=$(sed -n 's/__app_bugtracker_url__ = "\([^"]*\).*/\1/p' "$app_base_dir/version.py")
+app_display_name=$(sed -n 's/__display_name__ = "\([^"]*\).*/\1/p' "$app_base_dir/version.py")
+readonly app_display_name
+app_name=$(sed -n 's/__app_name__ = "\([^"]*\).*/\1/p' "$app_base_dir/version.py")
+readonly app_name
+app_id=$(sed -n 's/__app_id__ = "\([^"]*\).*/\1/p' "$app_base_dir/version.py")
+readonly app_id
+app_version=$(sed -n 's/__version__ = "\([^"]*\).*/\1/p' "$app_base_dir/version.py")
+readonly app_version
+app_version_date=$(sed -n 's/__version_date__ = "\([^"]*\).*/\1/p' "$app_base_dir/version.py")
+readonly app_version_date
+app_author=$(sed -n 's/__author_name__ = "\([^"]*\).*/\1/p' "$app_base_dir/version.py")
+readonly app_author
+app_author_contact=$(sed -n 's/__author_contact__ = "\([^"]*\).*/\1/p' "$app_base_dir/version.py")
+readonly app_author_contact
+app_url=$(sed -n 's/__app_url__ = "\([^"]*\).*/\1/p' "$app_base_dir/version.py")
+readonly app_url
+app_bugtracker_url=$(sed -n 's/__app_bugtracker_url__ = "\([^"]*\).*/\1/p' "$app_base_dir/version.py")
+readonly app_bugtracker_url
+
+export resources_dir scripts_dir build_dir dist_dir app_module app_base_dir app_repo_slug app_display_name app_name app_id app_version app_version_date app_author app_author_contact app_url app_bugtracker_url
 
 die()
 {
@@ -74,11 +86,12 @@ copy_with_variables()
     local destination=$2
 
     if [[ -d "$destination" ]]; then
-        dest_file="$(realpath "$destination")/$(basename "$source")"
+        dest_file=$(realpath "$destination")/$(basename "$source")
     else
         dest_file="$destination"
     fi
 
     cp "$source" "$dest_file"
+
     replace_variables "$dest_file"
 }
