@@ -25,7 +25,7 @@ class Ui_About(object):
         if not About.objectName():
             About.setObjectName("About")
         About.resize(800, 700)
-        sizePolicy = QSizePolicy(QSizePolicy.MinimumExpanding, QSizePolicy.MinimumExpanding)
+        sizePolicy = QSizePolicy(QSizePolicy.Policy.MinimumExpanding, QSizePolicy.Policy.MinimumExpanding)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(About.sizePolicy().hasHeightForWidth())
@@ -35,7 +35,7 @@ class Ui_About(object):
         self.verticalLayout.setObjectName("verticalLayout")
         self.app_name_title = QLabel(About)
         self.app_name_title.setObjectName("app_name_title")
-        sizePolicy1 = QSizePolicy(QSizePolicy.Fixed, QSizePolicy.Fixed)
+        sizePolicy1 = QSizePolicy(QSizePolicy.Policy.Fixed, QSizePolicy.Policy.Fixed)
         sizePolicy1.setHorizontalStretch(0)
         sizePolicy1.setVerticalStretch(0)
         sizePolicy1.setHeightForWidth(self.app_name_title.sizePolicy().hasHeightForWidth())

@@ -29,7 +29,7 @@ class Ui_BudgetNotFound(object):
         self.verticalLayout.setObjectName("verticalLayout")
         self.new_button = QPushButton(BudgetNotFound)
         self.new_button.setObjectName("new_button")
-        sizePolicy = QSizePolicy(QSizePolicy.Fixed, QSizePolicy.Fixed)
+        sizePolicy = QSizePolicy(QSizePolicy.Policy.Fixed, QSizePolicy.Policy.Fixed)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.new_button.sizePolicy().hasHeightForWidth())

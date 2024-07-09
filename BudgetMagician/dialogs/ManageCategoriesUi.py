@@ -25,7 +25,7 @@ class Ui_ManageCategories(object):
         if not ManageCategories.objectName():
             ManageCategories.setObjectName("ManageCategories")
         ManageCategories.resize(400, 300)
-        sizePolicy = QSizePolicy(QSizePolicy.Preferred, QSizePolicy.Preferred)
+        sizePolicy = QSizePolicy(QSizePolicy.Policy.Preferred, QSizePolicy.Policy.Preferred)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(ManageCategories.sizePolicy().hasHeightForWidth())
@@ -34,7 +34,7 @@ class Ui_ManageCategories(object):
         self.verticalLayout.setObjectName("verticalLayout")
         self.title_label = QLabel(ManageCategories)
         self.title_label.setObjectName("title_label")
-        sizePolicy1 = QSizePolicy(QSizePolicy.Fixed, QSizePolicy.Fixed)
+        sizePolicy1 = QSizePolicy(QSizePolicy.Policy.Fixed, QSizePolicy.Policy.Fixed)
         sizePolicy1.setHorizontalStretch(0)
         sizePolicy1.setVerticalStretch(0)
         sizePolicy1.setHeightForWidth(self.title_label.sizePolicy().hasHeightForWidth())
@@ -48,8 +48,8 @@ class Ui_ManageCategories(object):
 
         self.line = QFrame(ManageCategories)
         self.line.setObjectName("line")
-        self.line.setFrameShape(QFrame.HLine)
-        self.line.setFrameShadow(QFrame.Sunken)
+        self.line.setFrameShape(QFrame.Shape.HLine)
+        self.line.setFrameShadow(QFrame.Shadow.Sunken)
 
         self.verticalLayout.addWidget(self.line)
 
@@ -67,7 +67,7 @@ class Ui_ManageCategories(object):
 
         self.category_combobox = QComboBox(ManageCategories)
         self.category_combobox.setObjectName("category_combobox")
-        sizePolicy2 = QSizePolicy(QSizePolicy.Preferred, QSizePolicy.Fixed)
+        sizePolicy2 = QSizePolicy(QSizePolicy.Policy.Preferred, QSizePolicy.Policy.Fixed)
         sizePolicy2.setHorizontalStretch(0)
         sizePolicy2.setVerticalStretch(0)
         sizePolicy2.setHeightForWidth(self.category_combobox.sizePolicy().hasHeightForWidth())

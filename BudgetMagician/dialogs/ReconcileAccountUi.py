@@ -29,7 +29,7 @@ class Ui_ReconcileAccount(object):
         self.verticalLayout.setObjectName("verticalLayout")
         self.title_label = QLabel(ReconcileAccount)
         self.title_label.setObjectName("title_label")
-        sizePolicy = QSizePolicy(QSizePolicy.Fixed, QSizePolicy.Fixed)
+        sizePolicy = QSizePolicy(QSizePolicy.Policy.Fixed, QSizePolicy.Policy.Fixed)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.title_label.sizePolicy().hasHeightForWidth())
@@ -53,8 +53,8 @@ class Ui_ReconcileAccount(object):
 
         self.line = QFrame(ReconcileAccount)
         self.line.setObjectName("line")
-        self.line.setFrameShape(QFrame.HLine)
-        self.line.setFrameShadow(QFrame.Sunken)
+        self.line.setFrameShape(QFrame.Shape.HLine)
+        self.line.setFrameShadow(QFrame.Shadow.Sunken)
 
         self.verticalLayout.addWidget(self.line)
 

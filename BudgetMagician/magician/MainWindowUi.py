@@ -3,7 +3,7 @@
 ################################################################################
 ## Form generated from reading UI file 'MainWindow.ui'
 ##
-## Created by: Qt User Interface Compiler version 6.5.2
+## Created by: Qt User Interface Compiler version 6.7.2
 ##
 ## WARNING! All changes made in this file will be lost when recompiling UI file!
 ################################################################################
@@ -72,7 +72,7 @@ class Ui_MainWindow(object):
         self.horizontalLayout_7.setObjectName("horizontalLayout_7")
         self.manage_categories_button = QPushButton(self.budget_tab)
         self.manage_categories_button.setObjectName("manage_categories_button")
-        sizePolicy = QSizePolicy(QSizePolicy.Fixed, QSizePolicy.Fixed)
+        sizePolicy = QSizePolicy(QSizePolicy.Policy.Fixed, QSizePolicy.Policy.Fixed)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.manage_categories_button.sizePolicy().hasHeightForWidth())
@@ -97,7 +97,7 @@ class Ui_MainWindow(object):
 
         self.horizontalLayout_7.addWidget(self.budget_year_combo)
 
-        self.horizontalSpacer_14 = QSpacerItem(40, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)
+        self.horizontalSpacer_14 = QSpacerItem(40, 20, QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Minimum)
 
         self.horizontalLayout_7.addItem(self.horizontalSpacer_14)
 
@@ -123,7 +123,7 @@ class Ui_MainWindow(object):
 
         self.horizontalLayout_11.addWidget(self.not_budgeted)
 
-        self.horizontalSpacer_15 = QSpacerItem(40, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)
+        self.horizontalSpacer_15 = QSpacerItem(40, 20, QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Minimum)
 
         self.horizontalLayout_11.addItem(self.horizontalSpacer_15)
 
@@ -139,7 +139,7 @@ class Ui_MainWindow(object):
 
         self.horizontalLayout_12.addWidget(self.overspent_label)
 
-        self.horizontalSpacer_18 = QSpacerItem(13, 20, QSizePolicy.Fixed, QSizePolicy.Minimum)
+        self.horizontalSpacer_18 = QSpacerItem(13, 20, QSizePolicy.Policy.Fixed, QSizePolicy.Policy.Minimum)
 
         self.horizontalLayout_12.addItem(self.horizontalSpacer_18)
 
@@ -151,7 +151,7 @@ class Ui_MainWindow(object):
 
         self.horizontalLayout_12.addWidget(self.overspent)
 
-        self.horizontalSpacer_16 = QSpacerItem(1040, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)
+        self.horizontalSpacer_16 = QSpacerItem(1040, 20, QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Minimum)
 
         self.horizontalLayout_12.addItem(self.horizontalSpacer_16)
 
@@ -167,7 +167,7 @@ class Ui_MainWindow(object):
 
         self.horizontalLayout_13.addWidget(self.income_label)
 
-        self.horizontalSpacer_19 = QSpacerItem(134, 20, QSizePolicy.Fixed, QSizePolicy.Minimum)
+        self.horizontalSpacer_19 = QSpacerItem(134, 20, QSizePolicy.Policy.Fixed, QSizePolicy.Policy.Minimum)
 
         self.horizontalLayout_13.addItem(self.horizontalSpacer_19)
 
@@ -179,7 +179,7 @@ class Ui_MainWindow(object):
 
         self.horizontalLayout_13.addWidget(self.income)
 
-        self.horizontalSpacer_17 = QSpacerItem(1040, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)
+        self.horizontalSpacer_17 = QSpacerItem(1040, 20, QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Minimum)
 
         self.horizontalLayout_13.addItem(self.horizontalSpacer_17)
 
@@ -195,7 +195,7 @@ class Ui_MainWindow(object):
 
         self.horizontalLayout_14.addWidget(self.budgeted_label)
 
-        self.horizontalSpacer_20 = QSpacerItem(121, 20, QSizePolicy.Fixed, QSizePolicy.Minimum)
+        self.horizontalSpacer_20 = QSpacerItem(121, 20, QSizePolicy.Policy.Fixed, QSizePolicy.Policy.Minimum)
 
         self.horizontalLayout_14.addItem(self.horizontalSpacer_20)
 
@@ -207,7 +207,7 @@ class Ui_MainWindow(object):
 
         self.horizontalLayout_14.addWidget(self.budgeted)
 
-        self.horizontalSpacer_21 = QSpacerItem(1040, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)
+        self.horizontalSpacer_21 = QSpacerItem(1040, 20, QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Minimum)
 
         self.horizontalLayout_14.addItem(self.horizontalSpacer_21)
 
@@ -223,7 +223,7 @@ class Ui_MainWindow(object):
 
         self.horizontalLayout_17.addWidget(self.available_to_budget_label)
 
-        self.horizontalSpacer_22 = QSpacerItem(25, 20, QSizePolicy.Fixed, QSizePolicy.Minimum)
+        self.horizontalSpacer_22 = QSpacerItem(25, 20, QSizePolicy.Policy.Fixed, QSizePolicy.Policy.Minimum)
 
         self.horizontalLayout_17.addItem(self.horizontalSpacer_22)
 
@@ -234,7 +234,7 @@ class Ui_MainWindow(object):
 
         self.horizontalLayout_17.addWidget(self.available_to_budget_equal)
 
-        self.horizontalSpacer_23 = QSpacerItem(24, 20, QSizePolicy.Fixed, QSizePolicy.Minimum)
+        self.horizontalSpacer_23 = QSpacerItem(24, 20, QSizePolicy.Policy.Fixed, QSizePolicy.Policy.Minimum)
 
         self.horizontalLayout_17.addItem(self.horizontalSpacer_23)
 
@@ -246,7 +246,7 @@ class Ui_MainWindow(object):
 
         self.horizontalLayout_17.addWidget(self.available_to_budget)
 
-        self.horizontalSpacer_24 = QSpacerItem(1040, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)
+        self.horizontalSpacer_24 = QSpacerItem(1040, 20, QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Minimum)
 
         self.horizontalLayout_17.addItem(self.horizontalSpacer_24)
 
@@ -254,8 +254,8 @@ class Ui_MainWindow(object):
 
         self.line_2 = QFrame(self.budget_tab)
         self.line_2.setObjectName("line_2")
-        self.line_2.setFrameShape(QFrame.HLine)
-        self.line_2.setFrameShadow(QFrame.Sunken)
+        self.line_2.setFrameShape(QFrame.Shape.HLine)
+        self.line_2.setFrameShadow(QFrame.Shadow.Sunken)
 
         self.verticalLayout_4.addWidget(self.line_2)
 
@@ -282,7 +282,7 @@ class Ui_MainWindow(object):
 
         self.on_budget_accounts_table = QTableWidget(self.accounts_tab)
         self.on_budget_accounts_table.setObjectName("on_budget_accounts_table")
-        sizePolicy1 = QSizePolicy(QSizePolicy.Fixed, QSizePolicy.Expanding)
+        sizePolicy1 = QSizePolicy(QSizePolicy.Policy.Fixed, QSizePolicy.Policy.Expanding)
         sizePolicy1.setHorizontalStretch(0)
         sizePolicy1.setVerticalStretch(0)
         sizePolicy1.setHeightForWidth(self.on_budget_accounts_table.sizePolicy().hasHeightForWidth())
@@ -312,7 +312,7 @@ class Ui_MainWindow(object):
 
         self.horizontalLayout_9.addWidget(self.on_budget_total)
 
-        self.horizontalSpacer_11 = QSpacerItem(145, 20, QSizePolicy.Fixed, QSizePolicy.Minimum)
+        self.horizontalSpacer_11 = QSpacerItem(145, 20, QSizePolicy.Policy.Fixed, QSizePolicy.Policy.Minimum)
 
         self.horizontalLayout_9.addItem(self.horizontalSpacer_11)
 
@@ -355,7 +355,7 @@ class Ui_MainWindow(object):
 
         self.horizontalLayout_10.addWidget(self.off_budget_total)
 
-        self.horizontalSpacer_12 = QSpacerItem(145, 20, QSizePolicy.Fixed, QSizePolicy.Minimum)
+        self.horizontalSpacer_12 = QSpacerItem(145, 20, QSizePolicy.Policy.Fixed, QSizePolicy.Policy.Minimum)
 
         self.horizontalLayout_10.addItem(self.horizontalSpacer_12)
 
@@ -386,7 +386,7 @@ class Ui_MainWindow(object):
 
         self.transactions_table = QTableView(self.accounts_tab)
         self.transactions_table.setObjectName("transactions_table")
-        sizePolicy2 = QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
+        sizePolicy2 = QSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Expanding)
         sizePolicy2.setHorizontalStretch(0)
         sizePolicy2.setVerticalStretch(0)
         sizePolicy2.setHeightForWidth(self.transactions_table.sizePolicy().hasHeightForWidth())
@@ -415,7 +415,7 @@ class Ui_MainWindow(object):
 
         self.horizontalLayout_8.addWidget(self.make_a_transfer_button)
 
-        self.horizontalSpacer_13 = QSpacerItem(40, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)
+        self.horizontalSpacer_13 = QSpacerItem(40, 20, QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Minimum)
 
         self.horizontalLayout_8.addItem(self.horizontalSpacer_13)
 
@@ -493,7 +493,7 @@ class Ui_MainWindow(object):
         self.horizontalLayout.setObjectName("horizontalLayout")
         self.spending_by_category_button = QPushButton(self.Reports_tab)
         self.spending_by_category_button.setObjectName("spending_by_category_button")
-        sizePolicy3 = QSizePolicy(QSizePolicy.Minimum, QSizePolicy.Fixed)
+        sizePolicy3 = QSizePolicy(QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Fixed)
         sizePolicy3.setHorizontalStretch(0)
         sizePolicy3.setVerticalStretch(0)
         sizePolicy3.setHeightForWidth(self.spending_by_category_button.sizePolicy().hasHeightForWidth())
@@ -534,7 +534,7 @@ class Ui_MainWindow(object):
 
         self.horizontalLayout.addWidget(self.net_worth_button)
 
-        self.horizontalSpacer_2 = QSpacerItem(40, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)
+        self.horizontalSpacer_2 = QSpacerItem(40, 20, QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Minimum)
 
         self.horizontalLayout.addItem(self.horizontalSpacer_2)
 
@@ -542,8 +542,8 @@ class Ui_MainWindow(object):
 
         self.line = QFrame(self.Reports_tab)
         self.line.setObjectName("line")
-        self.line.setFrameShape(QFrame.HLine)
-        self.line.setFrameShadow(QFrame.Sunken)
+        self.line.setFrameShape(QFrame.Shape.HLine)
+        self.line.setFrameShadow(QFrame.Shadow.Sunken)
 
         self.verticalLayout_2.addWidget(self.line)
 
@@ -557,7 +557,7 @@ class Ui_MainWindow(object):
 
         self.horizontalLayout_2.addWidget(self.spending_by_category_label, 0, Qt.AlignRight)
 
-        self.horizontalSpacer = QSpacerItem(40, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)
+        self.horizontalSpacer = QSpacerItem(40, 20, QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Minimum)
 
         self.horizontalLayout_2.addItem(self.horizontalSpacer)
 
@@ -589,7 +589,7 @@ class Ui_MainWindow(object):
 
         self.horizontalLayout_3.addWidget(self.time_frame_label)
 
-        self.horizontalSpacer_7 = QSpacerItem(10, 20, QSizePolicy.Fixed, QSizePolicy.Minimum)
+        self.horizontalSpacer_7 = QSpacerItem(10, 20, QSizePolicy.Policy.Fixed, QSizePolicy.Policy.Minimum)
 
         self.horizontalLayout_3.addItem(self.horizontalSpacer_7)
 
@@ -609,7 +609,7 @@ class Ui_MainWindow(object):
 
         self.horizontalLayout_3.addWidget(self.report_date_two)
 
-        self.horizontalSpacer_3 = QSpacerItem(40, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)
+        self.horizontalSpacer_3 = QSpacerItem(40, 20, QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Minimum)
 
         self.horizontalLayout_3.addItem(self.horizontalSpacer_3)
 
@@ -625,7 +625,7 @@ class Ui_MainWindow(object):
 
         self.horizontalLayout_4.addWidget(self.categories_label)
 
-        self.horizontalSpacer_8 = QSpacerItem(11, 20, QSizePolicy.Fixed, QSizePolicy.Minimum)
+        self.horizontalSpacer_8 = QSpacerItem(11, 20, QSizePolicy.Policy.Fixed, QSizePolicy.Policy.Minimum)
 
         self.horizontalLayout_4.addItem(self.horizontalSpacer_8)
 
@@ -637,7 +637,7 @@ class Ui_MainWindow(object):
 
         self.horizontalLayout_4.addWidget(self.reports_categories_combo)
 
-        self.horizontalSpacer_4 = QSpacerItem(40, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)
+        self.horizontalSpacer_4 = QSpacerItem(40, 20, QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Minimum)
 
         self.horizontalLayout_4.addItem(self.horizontalSpacer_4)
 
@@ -653,7 +653,7 @@ class Ui_MainWindow(object):
 
         self.horizontalLayout_5.addWidget(self.payees_label)
 
-        self.horizontalSpacer_6 = QSpacerItem(31, 20, QSizePolicy.Fixed, QSizePolicy.Minimum)
+        self.horizontalSpacer_6 = QSpacerItem(31, 20, QSizePolicy.Policy.Fixed, QSizePolicy.Policy.Minimum)
 
         self.horizontalLayout_5.addItem(self.horizontalSpacer_6)
 
@@ -665,7 +665,7 @@ class Ui_MainWindow(object):
 
         self.horizontalLayout_5.addWidget(self.reports_payees_combo)
 
-        self.horizontalSpacer_5 = QSpacerItem(595, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)
+        self.horizontalSpacer_5 = QSpacerItem(595, 20, QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Minimum)
 
         self.horizontalLayout_5.addItem(self.horizontalSpacer_5)
 
@@ -681,7 +681,7 @@ class Ui_MainWindow(object):
 
         self.horizontalLayout_6.addWidget(self.accounts_label)
 
-        self.horizontalSpacer_10 = QSpacerItem(17, 20, QSizePolicy.Fixed, QSizePolicy.Minimum)
+        self.horizontalSpacer_10 = QSpacerItem(17, 20, QSizePolicy.Policy.Fixed, QSizePolicy.Policy.Minimum)
 
         self.horizontalLayout_6.addItem(self.horizontalSpacer_10)
 
@@ -693,7 +693,7 @@ class Ui_MainWindow(object):
 
         self.horizontalLayout_6.addWidget(self.reports_accounts_combo)
 
-        self.horizontalSpacer_9 = QSpacerItem(40, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)
+        self.horizontalSpacer_9 = QSpacerItem(40, 20, QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Minimum)
 
         self.horizontalLayout_6.addItem(self.horizontalSpacer_9)
 

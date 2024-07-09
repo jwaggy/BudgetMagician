@@ -29,7 +29,7 @@ class Ui_ReleaseNotes(object):
         self.verticalLayout.setObjectName("verticalLayout")
         self.text_box = QTextBrowser(ReleaseNotes)
         self.text_box.setObjectName("text_box")
-        sizePolicy = QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
+        sizePolicy = QSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Expanding)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.text_box.sizePolicy().hasHeightForWidth())
@@ -39,7 +39,7 @@ class Ui_ReleaseNotes(object):
 
         self.ok = QPushButton(ReleaseNotes)
         self.ok.setObjectName("ok")
-        sizePolicy1 = QSizePolicy(QSizePolicy.Fixed, QSizePolicy.Fixed)
+        sizePolicy1 = QSizePolicy(QSizePolicy.Policy.Fixed, QSizePolicy.Policy.Fixed)
         sizePolicy1.setHorizontalStretch(0)
         sizePolicy1.setVerticalStretch(0)
         sizePolicy1.setHeightForWidth(self.ok.sizePolicy().hasHeightForWidth())

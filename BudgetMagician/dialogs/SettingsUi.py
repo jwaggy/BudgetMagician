@@ -55,7 +55,7 @@ class Ui_Settings(object):
         self.horizontalLayout_4.setContentsMargins(0, 0, 0, 0)
         self.label_5 = QLabel(self.horizontalLayoutWidget_3)
         self.label_5.setObjectName("label_5")
-        sizePolicy = QSizePolicy(QSizePolicy.Fixed, QSizePolicy.Fixed)
+        sizePolicy = QSizePolicy(QSizePolicy.Policy.Fixed, QSizePolicy.Policy.Fixed)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.label_5.sizePolicy().hasHeightForWidth())
@@ -104,7 +104,7 @@ class Ui_Settings(object):
         self.logging.setObjectName("logging")
         self.horizontalLayout_2 = QHBoxLayout(self.logging)
         self.horizontalLayout_2.setObjectName("horizontalLayout_2")
-        self.horizontalSpacer = QSpacerItem(40, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)
+        self.horizontalSpacer = QSpacerItem(40, 20, QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Minimum)
 
         self.horizontalLayout_2.addItem(self.horizontalSpacer)
 
@@ -158,17 +158,17 @@ class Ui_Settings(object):
 
         self.formLayout.setWidget(3, QFormLayout.FieldRole, self.mb_line_edit)
 
-        self.verticalSpacer = QSpacerItem(20, 40, QSizePolicy.Minimum, QSizePolicy.Expanding)
+        self.verticalSpacer = QSpacerItem(20, 40, QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Expanding)
 
         self.formLayout.setItem(0, QFormLayout.LabelRole, self.verticalSpacer)
 
-        self.verticalSpacer_2 = QSpacerItem(20, 40, QSizePolicy.Minimum, QSizePolicy.Expanding)
+        self.verticalSpacer_2 = QSpacerItem(20, 40, QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Expanding)
 
         self.formLayout.setItem(6, QFormLayout.LabelRole, self.verticalSpacer_2)
 
         self.horizontalLayout_2.addLayout(self.formLayout)
 
-        self.horizontalSpacer_2 = QSpacerItem(40, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)
+        self.horizontalSpacer_2 = QSpacerItem(40, 20, QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Minimum)
 
         self.horizontalLayout_2.addItem(self.horizontalSpacer_2)
 
