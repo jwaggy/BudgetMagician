@@ -3,6 +3,8 @@
 ![GitHub](https://img.shields.io/github/license/jwaggy/BudgetMagician)
 ![GitHub last commit (branch)](https://img.shields.io/github/last-commit/jwaggy/BudgetMagician/main)
 [![Crowdin](https://badges.crowdin.net/budgetmagician/localized.svg)](https://crowdin.com/project/budgetmagician)
+![GitHub Downloads (all assets, all releases)](https://img.shields.io/github/downloads/jwaggy/BudgetMagician/total)
+
 
 ## About
 
