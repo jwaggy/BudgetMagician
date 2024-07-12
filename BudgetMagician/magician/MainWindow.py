@@ -8,6 +8,13 @@ from PySide6.QtCore import Slot, Signal, QDate, QModelIndex
 from PySide6.QtGui import QIcon, QPixmap, QPainter, QPdfWriter, QPageSize, QPageLayout
 from PySide6.QtWidgets import QMainWindow, QTableWidgetItem, QFileDialog, QHeaderView, QAbstractItemView
 from dateutil.relativedelta import relativedelta
+from endstech_shared.Settings import Settings
+from endstech_shared.directory_utils import get_desktop_dir, get_app_data_dir
+from endstech_shared.environment_utils import IS_WINDOWS, IS_FROZEN
+from endstech_shared.qt_chart_utils import get_pie_chart_from_dict, get_bar_char_from_dict
+from endstech_shared.qt_combo_box_utils import fill_combo_box, set_combo_box_by_data, get_combo_box_dict_from_list
+from endstech_shared.qt_translation_utils import translate
+from endstech_shared.sqlalchemy_utils import run_migrations, get_magic_session
 from sqlalchemy import select, and_
 from sqlalchemy.orm import Session, scoped_session
 
@@ -31,15 +38,9 @@ from BudgetMagician.magician.queries import (
     get_balances_dict_for_account,
 )
 from BudgetMagician.parameters.combobox_constants import MONTHS, ABBREVIATED_MONTHS
-from BudgetMagician.settings import MIGRATIONS_DIR
+from BudgetMagician.settings import MIGRATIONS_DIR, IS_DEV, MODULE_DIR, default_settings, DATABASE_DRIVER
 from BudgetMagician.table_models.BudgetTableModel import BudgetTableModel, BudgetSubcategoryRow
 from BudgetMagician.table_models.TransactionTableModel import TransactionTableModel, TransactionRow
-from BudgetMagician.utils.Settings import Settings
-from BudgetMagician.utils.chart_utils import get_pie_chart_from_dict, get_bar_char_from_dict
-from BudgetMagician.utils.combox_utils import fill_combo_box, set_combo_box_by_data, get_combo_box_dict_from_list
-from BudgetMagician.utils.db import run_migrations, get_magic_session
-from BudgetMagician.utils.dir import get_desktop_dir
-from BudgetMagician.utils.qt import translate
 from BudgetMagician.utils.table_utils import fill_account_table
 
 
@@ -49,7 +50,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
     def __init__(self):
         super().__init__()
         self.setupUi(self)
-        self.budget_file = Settings().get("budget/name")
+        self.budget_file = Settings(get_app_data_dir(IS_WINDOWS, IS_FROZEN, IS_DEV, MODULE_DIR) / "settings.ini", default_settings).get("budget/name")
         self.budget_not_found_window = BudgetNotFound(self)
         self.manage_accounts_window: Optional[ManageAccounts] = None
         self.manage_categories_window: Optional[ManageCategories] = None
@@ -71,7 +72,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         if self.budget_file == "":
             self.budget_not_found_window.open()
         else:
-            run_migrations(str(MIGRATIONS_DIR), self.budget_file)
+            run_migrations(str(MIGRATIONS_DIR), self.budget_file, DATABASE_DRIVER)
             self.setup_windows_requiring_budget_file()
             self.fill_ui()
 
@@ -301,7 +302,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         last_day_in_last_month_date = last_day_in_current_month_date - relativedelta(months=1)
 
         db: scoped_session[Session]
-        with get_magic_session(self.budget_file) as db:
+        with get_magic_session(self.budget_file, DATABASE_DRIVER) as db:
             income_budget_subcategory = db.execute(select(BudgetSubcategory.id).where(BudgetSubcategory.name == "Income")).first()
 
             if income_budget_subcategory is None:
@@ -388,7 +389,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         accounts_text = self.reports_accounts_combo.currentText()
 
         db: scoped_session[Session]
-        with get_magic_session(self.budget_file) as db:
+        with get_magic_session(self.budget_file, DATABASE_DRIVER) as db:
             if category_text == "All":
                 category = None
             else:
@@ -441,7 +442,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         income_v_expense_dict[net_income_text] = []
 
         db: scoped_session[Session]
-        with get_magic_session(self.budget_file) as db:
+        with get_magic_session(self.budget_file, DATABASE_DRIVER) as db:
             for key in ABBREVIATED_MONTHS.keys():
                 max_day = calendar.monthrange(todays_date.year, key)[1]
                 rows = db.scalars(
@@ -511,7 +512,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         net_worth_dict[net_worth_text] = []
 
         db: scoped_session[Session]
-        with get_magic_session(self.budget_file) as db:
+        with get_magic_session(self.budget_file, DATABASE_DRIVER) as db:
             for key in ABBREVIATED_MONTHS.keys():
                 max_day = calendar.monthrange(todays_date.year, key)[1]
                 rows = db.scalars(
@@ -554,7 +555,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         spending_trends_dict[spending_text] = []
 
         db: scoped_session[Session]
-        with get_magic_session(self.budget_file) as db:
+        with get_magic_session(self.budget_file, DATABASE_DRIVER) as db:
             for key in ABBREVIATED_MONTHS.keys():
                 max_day = calendar.monthrange(todays_date.year, key)[1]
                 rows = db.scalars(
@@ -590,7 +591,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         amounts_per_payee_dict = {}
 
         db: scoped_session[Session]
-        with get_magic_session(self.budget_file) as db:
+        with get_magic_session(self.budget_file, DATABASE_DRIVER) as db:
             rows = db.scalars(select(Transaction).where(and_(Transaction.date >= starting_date, Transaction.date <= ending_date)).filter_by(**kwargs)).all()
 
             for row in rows:
@@ -621,7 +622,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         amounts_per_category_dict = {}
 
         db: scoped_session[Session]
-        with get_magic_session(self.budget_file) as db:
+        with get_magic_session(self.budget_file, DATABASE_DRIVER) as db:
             rows = db.scalars(select(Transaction).where(and_(Transaction.date >= starting_date, Transaction.date <= ending_date)).filter_by(**kwargs)).all()
 
             for row in rows:
@@ -655,7 +656,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
     def preload_transactions_table(self, account_name):
         db: scoped_session[Session]
-        with get_magic_session(self.budget_file) as db:
+        with get_magic_session(self.budget_file, DATABASE_DRIVER) as db:
             account = db.scalars(select(Account).where(Account.name == account_name)).first()
 
             if account is not None:
@@ -675,7 +676,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
     def preload_budget_table(self, date_to_search: date):
         db: scoped_session[Session]
-        with get_magic_session(self.budget_file) as db:
+        with get_magic_session(self.budget_file, DATABASE_DRIVER) as db:
             budget_subcategory_ids = db.execute(select(BudgetSubcategory.id).where(BudgetSubcategory.name != "Income")).all()
 
         for budget_subcategory_id in budget_subcategory_ids:
@@ -713,7 +714,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
         if index is not None:
             db: scoped_session[Session]
-            with get_magic_session(self.budget_file) as db:
+            with get_magic_session(self.budget_file, DATABASE_DRIVER) as db:
                 transaction = db.scalars(select(Transaction).where(Transaction.id == model.rows[index].id)).first()
 
                 if transaction is not None:
@@ -914,9 +915,9 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
     @Slot()
     def budget_changed(self):
-        self.budget_file = Settings().get("budget/name")
+        self.budget_file = Settings(get_app_data_dir(IS_WINDOWS, IS_FROZEN, IS_DEV, MODULE_DIR) / "settings.ini", default_settings).get("budget/name")
 
-        run_migrations(str(MIGRATIONS_DIR), self.budget_file)
+        run_migrations(str(MIGRATIONS_DIR), self.budget_file, DATABASE_DRIVER)
 
         self.setup_windows_requiring_budget_file()
 

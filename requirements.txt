@@ -3,3 +3,4 @@ qt-material==2.14
 SQLAlchemy==2.0.31
 alembic==1.13.2
 python-dateutil==2.9.0.post0
+endstech-shared==0.0.3

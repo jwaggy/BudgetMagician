@@ -1,6 +1,6 @@
 from PySide6.QtWidgets import QApplication
+from endstech_shared.environment_utils import IS_WINDOWS
 
-from BudgetMagician.parameters.env import IS_WINDOWS
 from BudgetMagician.version import __app_id__, __app_name__, __author_name__, __display_name__, __version__
 
 

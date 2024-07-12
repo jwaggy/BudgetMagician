@@ -1,11 +1,12 @@
 from datetime import datetime
 from typing import Union
 
+from endstech_shared.sqlalchemy_utils import get_magic_session
 from sqlalchemy import select
 from sqlalchemy.orm import Session, scoped_session
 
 from BudgetMagician.magician.models import Account, Transaction
-from BudgetMagician.utils.db import get_magic_session
+from BudgetMagician.settings import DATABASE_DRIVER
 
 
 def get_years_plus_five_for_combobox(path: str, model) -> dict[int, str]:
@@ -13,7 +14,7 @@ def get_years_plus_five_for_combobox(path: str, model) -> dict[int, str]:
     years_dict = {}
 
     db: scoped_session[Session]
-    with get_magic_session(path) as db:
+    with get_magic_session(path, DATABASE_DRIVER) as db:
         rows = db.execute(select(model.date).order_by(model.date).distinct()).all()
         years_set = set()
         years_set.add(current_year)
@@ -34,7 +35,7 @@ def get_years_plus_five_for_combobox(path: str, model) -> dict[int, str]:
 
 def get_names_list(path: str, model, on_budget: Union[bool, None] = None) -> list[str]:
     db: scoped_session[Session]
-    with get_magic_session(path) as db:
+    with get_magic_session(path, DATABASE_DRIVER) as db:
         if model.__name__ == "BudgetCategory":
             rows = db.execute(select(model.name).where(model.name != "SYSTEM").order_by(model.name)).all()
         elif model.__name__ == "Account" and on_budget is not None:
@@ -47,7 +48,7 @@ def get_names_list(path: str, model, on_budget: Union[bool, None] = None) -> lis
 
 def get_ids_list(path: str, model, on_budget: Union[bool, None] = None) -> list[int]:
     db: scoped_session[Session]
-    with get_magic_session(path) as db:
+    with get_magic_session(path, DATABASE_DRIVER) as db:
         if model.__name__ == "BudgetCategory":
             rows = db.execute(select(model.id).where(model.name != "SYSTEM").order_by(model.name)).all()
         elif model.__name__ == "Account" and on_budget is not None:
@@ -63,7 +64,7 @@ def get_list_of_accounts_with_totals(path: str, on_budget: bool) -> list[list[Un
     table_data = []
 
     db: scoped_session[Session]
-    with get_magic_session(path) as db:
+    with get_magic_session(path, DATABASE_DRIVER) as db:
         for account in accounts_list:
             fetched_account = db.scalars(select(Account).where(Account.name == account)).first()
 
@@ -81,7 +82,7 @@ def get_budget_type_total(path: str, on_budget: bool) -> float:
     totals = []
 
     db: scoped_session[Session]
-    with get_magic_session(path) as db:
+    with get_magic_session(path, DATABASE_DRIVER) as db:
         for account_id in accounts_list:
             rows = db.execute(select(Transaction.amount).where(Transaction.account_id == account_id)).all()
 
@@ -94,7 +95,7 @@ def get_balances_dict_for_account(path: str, account_name: str) -> dict[str, flo
     balance_dict = {}
 
     db: scoped_session[Session]
-    with get_magic_session(path) as db:
+    with get_magic_session(path, DATABASE_DRIVER) as db:
         fetched_account = db.scalars(select(Account).where(Account.name == account_name)).first()
 
         if fetched_account is None:

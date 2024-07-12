@@ -5,15 +5,16 @@ from PySide6 import QtCore
 from PySide6.QtCore import Qt, Signal, QDate, Slot
 from PySide6.QtGui import QDoubleValidator
 from PySide6.QtWidgets import QDialog, QMessageBox
+from endstech_shared.qt_combo_box_utils import get_combo_box_dict_from_list, fill_combo_box
+from endstech_shared.qt_translation_utils import translate
+from endstech_shared.sqlalchemy_utils import get_magic_session
 from sqlalchemy import select
 from sqlalchemy.orm import scoped_session, Session
 
 from BudgetMagician.dialogs.MakeATransferUi import Ui_MakeATransfer
 from BudgetMagician.magician.models import Transaction, Account
 from BudgetMagician.magician.queries import get_names_list
-from BudgetMagician.utils.combox_utils import fill_combo_box, get_combo_box_dict_from_list
-from BudgetMagician.utils.db import get_magic_session
-from BudgetMagician.utils.qt import translate
+from BudgetMagician.settings import DATABASE_DRIVER
 
 
 class MakeATransfer(QDialog, Ui_MakeATransfer):
@@ -67,7 +68,7 @@ class MakeATransfer(QDialog, Ui_MakeATransfer):
             return
 
         db: scoped_session[Session]
-        with get_magic_session(self.budget_file) as db:
+        with get_magic_session(self.budget_file, DATABASE_DRIVER) as db:
             from_account_id = db.execute(select(Account.id).where(Account.name == from_account_text)).first()
             to_account_id = db.execute(select(Account.id).where(Account.name == to_account_text)).first()
 

@@ -5,13 +5,14 @@ from PySide6 import QtCore
 from PySide6.QtCore import QDate, Signal, Qt, Slot
 from PySide6.QtGui import QDoubleValidator
 from PySide6.QtWidgets import QDialog, QMessageBox
+from endstech_shared.qt_translation_utils import translate
+from endstech_shared.sqlalchemy_utils import get_magic_session
 from sqlalchemy import select, and_
 from sqlalchemy.orm import scoped_session, Session
 
 from BudgetMagician.dialogs.ReconcileAccountUi import Ui_ReconcileAccount
 from BudgetMagician.magician.models import Account, Transaction, BudgetSubcategory
-from BudgetMagician.utils.db import get_magic_session
-from BudgetMagician.utils.qt import translate
+from BudgetMagician.settings import DATABASE_DRIVER
 
 
 class ReconcileAccount(QDialog, Ui_ReconcileAccount):
@@ -42,7 +43,7 @@ class ReconcileAccount(QDialog, Ui_ReconcileAccount):
         self.date.setDate(QDate(current_date.year, current_date.month, current_date.day))
 
         db: scoped_session[Session]
-        with get_magic_session(self.budget_file) as db:
+        with get_magic_session(self.budget_file, DATABASE_DRIVER) as db:
             account = db.execute(select(Account.id).where(Account.name == self.current_account_name)).first()
 
             if account is not None:
@@ -62,7 +63,7 @@ class ReconcileAccount(QDialog, Ui_ReconcileAccount):
         current_amount = float(self.amount.text())
 
         db: scoped_session[Session]
-        with get_magic_session(self.budget_file) as db:
+        with get_magic_session(self.budget_file, DATABASE_DRIVER) as db:
             account_id = db.execute(select(Account.id).where(Account.name == self.current_account_name)).first()
 
             budget_subcategory_id = db.execute(select(BudgetSubcategory.id).where(BudgetSubcategory.name == "Income")).first()

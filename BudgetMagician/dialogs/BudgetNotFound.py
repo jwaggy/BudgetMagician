@@ -5,11 +5,13 @@ import PySide6
 from PySide6 import QtCore
 from PySide6.QtCore import Qt, Signal, Slot
 from PySide6.QtWidgets import QDialog, QFileDialog, QMessageBox
+from endstech_shared.Settings import Settings
+from endstech_shared.directory_utils import get_app_data_dir
+from endstech_shared.environment_utils import IS_WINDOWS, IS_FROZEN
+from endstech_shared.qt_translation_utils import translate
 
 from BudgetMagician.dialogs.BudgetNotFoundUi import Ui_BudgetNotFound
-from BudgetMagician.utils.Settings import Settings
-from BudgetMagician.utils.dir import get_app_data_dir
-from BudgetMagician.utils.qt import translate
+from BudgetMagician.settings import IS_DEV, MODULE_DIR, default_settings
 
 
 class BudgetNotFound(QDialog, Ui_BudgetNotFound):
@@ -29,13 +31,13 @@ class BudgetNotFound(QDialog, Ui_BudgetNotFound):
 
     @Slot()
     def open_old_budget_file_dialog(self):
-        open_dir = get_app_data_dir()
+        open_dir = get_app_data_dir(IS_WINDOWS, IS_FROZEN, IS_DEV, MODULE_DIR)
         self.file_name = QFileDialog.getOpenFileName(self, translate("FileDialog", "Open Existing Budget"), str(open_dir), translate("FileDialog", "Budgets (*.bgt)"))
         self.file_text.setText(self.file_name[0])
 
     @Slot()
     def open_new_budget_file_dialog(self):
-        open_dir = get_app_data_dir()
+        open_dir = get_app_data_dir(IS_WINDOWS, IS_FROZEN, IS_DEV, MODULE_DIR)
         self.file_name = QFileDialog.getSaveFileName(self, translate("FileDialog", "Open New Budget"), str(open_dir), translate("FileDialog", "Budgets (*.bgt)"))
         self.file_text.setText(self.file_name[0])
 
@@ -46,7 +48,7 @@ class BudgetNotFound(QDialog, Ui_BudgetNotFound):
             self.file_name = (str(file_path),)
 
             if file_path.parent.is_dir():
-                Settings().set("budget/name", str(file_path))
+                Settings(get_app_data_dir(IS_WINDOWS, IS_FROZEN, IS_DEV, MODULE_DIR) / "settings.ini", default_settings).set("budget/name", str(file_path))
                 self.budget_name_changed.emit()
                 self.close()
             else:

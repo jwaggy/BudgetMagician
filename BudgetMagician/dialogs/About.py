@@ -5,11 +5,12 @@ from PySide6.QtCore import Qt
 from PySide6.QtCore import __version__ as qt_version
 from PySide6.QtWidgets import QDialog
 from dateutil import __version__ as dateutil_version
+from endstech_shared.environment_utils import PYTHON_VERSION
 from sqlalchemy import __version__ as sqlalchemy_version
+from endstech_shared import __version__ as endstech_version
 
 from BudgetMagician.dialogs.AboutUi import Ui_About
 from BudgetMagician.parameters.Language import LANGUAGES
-from BudgetMagician.parameters.env import PYTHON_VERSION
 from BudgetMagician.version import __display_name__, __version__, __app_url__, __app_bugtracker_url__, __app_license_url__
 
 
@@ -61,7 +62,8 @@ class About(QDialog, Ui_About):
                 Citation("Pyside6", pyside_qt_version, "Qt for Python Team", "GPL 3.0 and LGPL 3.0", "https://www.qt.io/qt-for-python"),
                 Citation("qt-material", "2.14", "Signal Processing and Recognition Group", "BSD 2-Clause License", "https://github.com/UN-GCPDS/qt-material"),
                 Citation("SQLAlchemy", sqlalchemy_version, "Mike Bayer", "MIT License", "https://github.com/sqlalchemy/sqlalchemy"),
-                Citation("dateutil", dateutil_version, "Gustavo Niemeyer", "Dual Apache 2.0, BSD 3-Clause", "https://github.com/dateutil/dateutil")
+                Citation("dateutil", dateutil_version, "Gustavo Niemeyer", "Dual Apache 2.0, BSD 3-Clause", "https://github.com/dateutil/dateutil"),
+                Citation("endstech-shared", endstech_version, "Joseph Waggy", "GPL 3.0", "https://github.com/jwaggy/endstech_shared"),
             ],
             "gui": [
                 Citation("flag-icons", "6.10.0", "Lipis", "MIT License", "https://github.com/lipis/flag-icons"),

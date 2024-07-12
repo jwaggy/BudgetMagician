@@ -1,10 +1,10 @@
 import logging
 
+from endstech_shared import logging_utils
+from endstech_shared.qt_translation_utils import translate
 from qt_material import list_themes
 
 from BudgetMagician.parameters.Language import LANGUAGES
-from BudgetMagician.utils import logging as logging_utils
-from BudgetMagician.utils.qt import translate
 
 LOG_LEVELS = {
     logging_utils.DISABLED: translate("ErrorLevel", "Disabled"),
