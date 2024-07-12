@@ -7,7 +7,6 @@ from PySide6 import QtPrintSupport
 from PySide6.QtCore import Slot, Signal, QDate, QModelIndex
 from PySide6.QtGui import QIcon, QPixmap, QPainter, QPdfWriter, QPageSize, QPageLayout
 from PySide6.QtWidgets import QMainWindow, QTableWidgetItem, QFileDialog, QHeaderView, QAbstractItemView
-from dateutil.relativedelta import relativedelta
 from endstech_shared.Settings import Settings
 from endstech_shared.directory_utils import get_desktop_dir, get_app_data_dir
 from endstech_shared.environment_utils import IS_WINDOWS, IS_FROZEN
@@ -226,8 +225,6 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
     def fill_date_edits(self):
         current_date = date.today()
-        print(current_date)
-
         self.report_date_one.setDate(QDate(current_date.year, 1, 1))
         self.report_date_two.setDate(QDate(current_date.year, current_date.month, current_date.day))
 
@@ -287,19 +284,21 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.working_balance.setText("")
 
     def fill_budget_bar(self):
-        todays_date = date.today()
+        todays_qdate = QDate.currentDate()
         month = self.budget_month_combo.currentData()
         year = self.budget_year_combo.currentData()
 
         if month is None or year is None:
-            year = todays_date.year
-            month = todays_date.month
+            year = todays_qdate.year()
+            month = todays_qdate.month()
 
-        max_day_in_current_month = calendar.monthrange(year, month)[1]
+        max_day_in_current_month = todays_qdate.daysInMonth()
         current_month_date = date(year, month, 1)
         last_day_in_current_month_date = date(year, month, max_day_in_current_month)
-        last_month_date = current_month_date - relativedelta(months=1)
-        last_day_in_last_month_date = last_day_in_current_month_date - relativedelta(months=1)
+        last_month_qdate = QDate(current_month_date.year, current_month_date.month, current_month_date.day).addMonths(-1)
+        last_month_date = date(last_month_qdate.year(), last_month_qdate.month(), last_month_qdate.day())
+        last_day_in_last_month_qdate = QDate(last_day_in_current_month_date.year, last_day_in_current_month_date.month, last_day_in_current_month_date.day).addMonths(-1)
+        last_day_in_last_month_date = date(last_day_in_last_month_qdate.year(), last_day_in_last_month_qdate.month(), last_day_in_last_month_qdate.day())
 
         db: scoped_session[Session]
         with get_magic_session(self.budget_file, DATABASE_DRIVER) as db:

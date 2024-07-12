@@ -9,7 +9,7 @@ MODULE_DIR = Path(__file__).resolve().parent
 
 MIGRATIONS_DIR = MODULE_DIR / "migrations"
 
-IS_DEV = True
+IS_DEV = False
 
 DATABASE_DRIVER = "sqlite"
 
@@ -18,7 +18,7 @@ default_settings = {
     "window/maximized": True,
     "window/theme": "light_blue.xml",
     "budget/name": "",
-    "logging/log_level": logging.DEBUG,
+    "logging/log_level": logging.INFO,
     "logging/log_limit_size": 10,
     "logging/log_limit_backups": 1,
 }
