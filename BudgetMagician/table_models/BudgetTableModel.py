@@ -7,11 +7,12 @@ import PySide6
 from PySide6.QtCore import Slot, QAbstractTableModel, QModelIndex, Qt
 from PySide6.QtGui import QDoubleValidator, QColor
 from PySide6.QtWidgets import QLineEdit
+from endstech_shared.sqlalchemy_utils import get_magic_session
 from sqlalchemy import select, and_
 from sqlalchemy.orm import scoped_session, Session
 
 from BudgetMagician.magician.models import Budget, Transaction, BudgetSubcategory
-from BudgetMagician.utils.db import get_magic_session
+from BudgetMagician.settings import DATABASE_DRIVER
 
 
 class BudgetSubcategoryRow:
@@ -24,7 +25,7 @@ class BudgetSubcategoryRow:
         self.budget_subcategory_name = ""
 
         db: scoped_session[Session]
-        with get_magic_session(self.budget_file) as db:
+        with get_magic_session(self.budget_file, DATABASE_DRIVER) as db:
             budget = db.scalars(select(Budget).where(and_(Budget.budget_subcategory_id == self.id, Budget.date == self.date))).first()
 
             if budget is None:
@@ -68,7 +69,7 @@ class BudgetSubcategoryRow:
         max_date = date(self.date.year, self.date.month, max_day)
 
         db: scoped_session[Session]
-        with get_magic_session(self.budget_file) as db:
+        with get_magic_session(self.budget_file, DATABASE_DRIVER) as db:
             transactions = db.execute(
                 select(Transaction.amount).where(and_(Transaction.budget_subcategory_id == self.id, Transaction.date >= self.date, Transaction.date <= max_date))
             ).all()
@@ -82,7 +83,7 @@ class BudgetSubcategoryRow:
         self.budgeted_amount = self.amount.text()
 
         db: scoped_session[Session]
-        with get_magic_session(self.budget_file) as db:
+        with get_magic_session(self.budget_file, DATABASE_DRIVER) as db:
             budget = db.scalars(select(Budget).where(and_(Budget.budget_subcategory_id == self.id, Budget.date == self.date))).first()
 
             if budget is not None:

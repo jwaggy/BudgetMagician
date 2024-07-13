@@ -3,12 +3,15 @@ from PySide6 import QtCore
 from PySide6.QtCore import Qt
 from PySide6.QtGui import QIntValidator
 from PySide6.QtWidgets import QDialog, QMessageBox
+from endstech_shared.Settings import Settings
+from endstech_shared.directory_utils import get_app_data_dir
+from endstech_shared.environment_utils import IS_WINDOWS, IS_FROZEN
+from endstech_shared.qt_combo_box_utils import fill_combo_box, set_combo_box_by_data, fill_combo_box_with_icon
+from endstech_shared.qt_translation_utils import translate
 
 from BudgetMagician.dialogs.SettingsUi import Ui_Settings
 from BudgetMagician.parameters.combobox_constants import LOG_LEVELS, get_language_combo_dict, get_theme_combo_dict
-from BudgetMagician.utils.Settings import Settings
-from BudgetMagician.utils.combox_utils import fill_combo_box, fill_combo_box_with_icon, set_combo_box_by_data
-from BudgetMagician.utils.qt import translate
+from BudgetMagician.settings import IS_DEV, MODULE_DIR, default_settings
 
 
 class SettingsDialog(QDialog, Ui_Settings):
@@ -31,26 +34,26 @@ class SettingsDialog(QDialog, Ui_Settings):
     def fill_log_levels(self):
         fill_combo_box(self.logging_combo, LOG_LEVELS)
 
-        current_log_level = Settings().get("logging/log_level")
+        current_log_level = Settings(get_app_data_dir(IS_WINDOWS, IS_FROZEN, IS_DEV, MODULE_DIR) / "settings.ini", default_settings).get("logging/log_level")
 
         set_combo_box_by_data(self.logging_combo, current_log_level)
 
     def fill_languages(self):
         fill_combo_box_with_icon(self.language_combo, get_language_combo_dict())
 
-        current_language = Settings().get("window/language")
+        current_language = Settings(get_app_data_dir(IS_WINDOWS, IS_FROZEN, IS_DEV, MODULE_DIR) / "settings.ini", default_settings).get("window/language")
 
         set_combo_box_by_data(self.language_combo, current_language)
 
     def fill_themes(self):
         fill_combo_box(self.theme_combo, get_theme_combo_dict())
 
-        current_theme = Settings().get("window/theme")
+        current_theme = Settings(get_app_data_dir(IS_WINDOWS, IS_FROZEN, IS_DEV, MODULE_DIR) / "settings.ini", default_settings).get("window/theme")
 
         set_combo_box_by_data(self.theme_combo, current_theme)
 
     def fill_backup_line(self):
-        backup_limit = Settings().get("logging/log_limit_backups")
+        backup_limit = Settings(get_app_data_dir(IS_WINDOWS, IS_FROZEN, IS_DEV, MODULE_DIR) / "settings.ini", default_settings).get("logging/log_limit_backups")
 
         self.log_backups_line_edit.setText(str(backup_limit))
 
@@ -58,7 +61,7 @@ class SettingsDialog(QDialog, Ui_Settings):
         self.log_backups_line_edit.setValidator(int_validator)
 
     def fill_log_limit_line(self):
-        log_limit = Settings().get("logging/log_limit_size")
+        log_limit = Settings(get_app_data_dir(IS_WINDOWS, IS_FROZEN, IS_DEV, MODULE_DIR) / "settings.ini", default_settings).get("logging/log_limit_size")
 
         self.mb_line_edit.setText(str(log_limit))
 
@@ -66,33 +69,33 @@ class SettingsDialog(QDialog, Ui_Settings):
         self.mb_line_edit.setValidator(int_validator)
 
     def save_settings(self):
-        old_settings = Settings().get_all()
+        old_settings = Settings(get_app_data_dir(IS_WINDOWS, IS_FROZEN, IS_DEV, MODULE_DIR) / "settings.ini", default_settings).get_all()
         settings_changed = False
 
         log_backups = int(self.log_backups_line_edit.text())
         if log_backups != old_settings["logging/log_limit_backups"]:
             settings_changed = True
-            Settings().set("logging/log_limit_backups", log_backups)
+            Settings(get_app_data_dir(IS_WINDOWS, IS_FROZEN, IS_DEV, MODULE_DIR) / "settings.ini", default_settings).set("logging/log_limit_backups", log_backups)
 
         log_size = int(self.mb_line_edit.text())
         if log_size != old_settings["logging/log_limit_size"]:
             settings_changed = True
-            Settings().set("logging/log_limit_size", log_size)
+            Settings(get_app_data_dir(IS_WINDOWS, IS_FROZEN, IS_DEV, MODULE_DIR) / "settings.ini", default_settings).set("logging/log_limit_size", log_size)
 
         log_level = self.logging_combo.currentData()
         if log_level != old_settings["logging/log_level"]:
             settings_changed = True
-            Settings().set("logging/log_level", log_level)
+            Settings(get_app_data_dir(IS_WINDOWS, IS_FROZEN, IS_DEV, MODULE_DIR) / "settings.ini", default_settings).set("logging/log_level", log_level)
 
         language = self.language_combo.currentData()
         if language != old_settings["window/language"]:
             settings_changed = True
-            Settings().set("window/language", language)
+            Settings(get_app_data_dir(IS_WINDOWS, IS_FROZEN, IS_DEV, MODULE_DIR) / "settings.ini", default_settings).set("window/language", language)
 
         theme = self.theme_combo.currentData()
         if theme != old_settings["window/theme"]:
             settings_changed = True
-            Settings().set("window/theme", theme)
+            Settings(get_app_data_dir(IS_WINDOWS, IS_FROZEN, IS_DEV, MODULE_DIR) / "settings.ini", default_settings).set("window/theme", theme)
 
         if settings_changed:
             QMessageBox.information(

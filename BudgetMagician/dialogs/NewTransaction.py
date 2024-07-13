@@ -5,15 +5,16 @@ from PySide6 import QtCore
 from PySide6.QtCore import Qt, QDate, Slot, Signal
 from PySide6.QtGui import QDoubleValidator
 from PySide6.QtWidgets import QDialog, QMessageBox
+from endstech_shared.qt_combo_box_utils import get_combo_box_dict_from_list, fill_combo_box, set_combo_box_by_data
+from endstech_shared.qt_translation_utils import translate
+from endstech_shared.sqlalchemy_utils import get_magic_session
 from sqlalchemy import select
 from sqlalchemy.orm import scoped_session, Session
 
 from BudgetMagician.dialogs.NewTransactionUi import Ui_NewTransaction
 from BudgetMagician.magician.models import BudgetSubcategory, Payee, Account, Transaction
 from BudgetMagician.magician.queries import get_names_list
-from BudgetMagician.utils.combox_utils import fill_combo_box, set_combo_box_by_data, get_combo_box_dict_from_list
-from BudgetMagician.utils.db import get_magic_session
-from BudgetMagician.utils.qt import translate
+from BudgetMagician.settings import DATABASE_DRIVER
 
 
 class NewTransaction(QDialog, Ui_NewTransaction):
@@ -77,7 +78,7 @@ class NewTransaction(QDialog, Ui_NewTransaction):
             return
 
         db: scoped_session[Session]
-        with get_magic_session(self.budget_file) as db:
+        with get_magic_session(self.budget_file, DATABASE_DRIVER) as db:
             possible_payee = db.scalars(select(Payee).where(Payee.name == payee_combo_text)).first()
 
             if possible_payee is None:
@@ -101,7 +102,7 @@ class NewTransaction(QDialog, Ui_NewTransaction):
         new_amount = float(self.amount.text())
 
         db: scoped_session[Session]
-        with get_magic_session(self.budget_file) as db:
+        with get_magic_session(self.budget_file, DATABASE_DRIVER) as db:
             account_id = db.execute(select(Account.id).where(Account.name == self.current_account_name)).first()
             payee_id = db.execute(select(Payee.id).where(Payee.name == assigned_payee)).first()
             budget_subcategory = db.scalars(select(BudgetSubcategory).where(BudgetSubcategory.name == assigned_category)).first()

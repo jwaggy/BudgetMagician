@@ -3,15 +3,16 @@ from PySide6 import QtCore
 from PySide6.QtCore import Qt, Signal, Slot
 from PySide6.QtGui import QIcon
 from PySide6.QtWidgets import QDialog, QMessageBox
+from endstech_shared.qt_combo_box_utils import get_combo_box_dict_from_list, fill_combo_box, set_combo_box_by_data
+from endstech_shared.qt_translation_utils import translate
+from endstech_shared.sqlalchemy_utils import get_magic_session
 from sqlalchemy import select
 from sqlalchemy.orm import scoped_session, Session
 
 from BudgetMagician.dialogs.ManageCategoriesUi import Ui_ManageCategories
 from BudgetMagician.magician.models import BudgetCategory, BudgetSubcategory
 from BudgetMagician.magician.queries import get_names_list
-from BudgetMagician.utils.combox_utils import set_combo_box_by_data, fill_combo_box, get_combo_box_dict_from_list
-from BudgetMagician.utils.db import get_magic_session
-from BudgetMagician.utils.qt import translate
+from BudgetMagician.settings import DATABASE_DRIVER
 
 
 class ManageCategories(QDialog, Ui_ManageCategories):
@@ -56,7 +57,7 @@ class ManageCategories(QDialog, Ui_ManageCategories):
             QMessageBox.warning(self, translate("Dialog", "Warning"), translate("Warning", "You must provide a master category name."), QMessageBox.StandardButton.Ok)
         else:
             db: scoped_session[Session]
-            with get_magic_session(self.budget_file) as db:
+            with get_magic_session(self.budget_file, DATABASE_DRIVER) as db:
                 master_category_from_db = db.scalars(select(BudgetCategory).where(BudgetCategory.name == master_category_text)).first()
 
                 if master_category_from_db is None:
@@ -81,7 +82,7 @@ class ManageCategories(QDialog, Ui_ManageCategories):
             QMessageBox.warning(self, translate("Dialog", "Warning"), translate("Warning", "You must provide a category name."), QMessageBox.StandardButton.Ok)
         else:
             db: scoped_session[Session]
-            with get_magic_session(self.budget_file) as db:
+            with get_magic_session(self.budget_file, DATABASE_DRIVER) as db:
                 master_category_id = db.execute(select(BudgetCategory.id).where(BudgetCategory.name == master_category_text)).first()
                 category = db.scalars(select(BudgetSubcategory).where(BudgetSubcategory.name == new_category)).first()
 
@@ -110,7 +111,7 @@ class ManageCategories(QDialog, Ui_ManageCategories):
         current_text = self.master_category_combo.currentText()
 
         db: scoped_session[Session]
-        with get_magic_session(self.budget_file) as db:
+        with get_magic_session(self.budget_file, DATABASE_DRIVER) as db:
             budget_category = db.scalars(select(BudgetCategory).where(BudgetCategory.name == current_text)).first()
 
             if budget_category is not None:
@@ -125,7 +126,7 @@ class ManageCategories(QDialog, Ui_ManageCategories):
         current_text = self.category_combobox.currentText()
 
         db: scoped_session[Session]
-        with get_magic_session(self.budget_file) as db:
+        with get_magic_session(self.budget_file, DATABASE_DRIVER) as db:
             budget_subcategory = db.scalars(select(BudgetSubcategory).where(BudgetSubcategory.name == current_text)).first()
 
             if budget_subcategory is not None:

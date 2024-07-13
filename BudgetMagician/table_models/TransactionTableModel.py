@@ -6,13 +6,14 @@ import PySide6
 from PySide6.QtCore import QDate, QAbstractTableModel, Qt, QModelIndex, Slot
 from PySide6.QtGui import QDoubleValidator
 from PySide6.QtWidgets import QDateEdit, QComboBox, QLineEdit, QCheckBox, QPushButton
+from endstech_shared.qt_combo_box_utils import fill_combo_box, get_combo_box_dict_from_list, set_combo_box_by_text
+from endstech_shared.sqlalchemy_utils import get_magic_session
 from sqlalchemy import select
 from sqlalchemy.orm import scoped_session, Session
 
 from BudgetMagician.magician.models import Payee, BudgetSubcategory, Transaction
 from BudgetMagician.magician.queries import get_names_list
-from BudgetMagician.utils.combox_utils import get_combo_box_dict_from_list, fill_combo_box, set_combo_box_by_text
-from BudgetMagician.utils.db import get_magic_session
+from BudgetMagician.settings import DATABASE_DRIVER
 
 
 class TransactionRow:
@@ -31,7 +32,7 @@ class TransactionRow:
 
         if self.id is not None:
             db: scoped_session[Session]
-            with get_magic_session(self.budget_file) as db:
+            with get_magic_session(self.budget_file, DATABASE_DRIVER) as db:
                 row = db.scalars(select(Transaction).where(Transaction.id == self.id)).first()
 
                 if row is not None:
@@ -90,7 +91,7 @@ class TransactionRow:
         self.transaction_date = fetched_date
 
         db: scoped_session[Session]
-        with get_magic_session(self.budget_file) as db:
+        with get_magic_session(self.budget_file, DATABASE_DRIVER) as db:
             transaction = db.scalars(select(Transaction).where(Transaction.id == self.id)).first()
 
             if transaction is not None:
@@ -102,7 +103,7 @@ class TransactionRow:
         self.transaction_payee_name = payee_name
 
         db: scoped_session[Session]
-        with get_magic_session(self.budget_file) as db:
+        with get_magic_session(self.budget_file, DATABASE_DRIVER) as db:
             payee = db.scalars(select(Payee).where(Payee.name == payee_name)).first()
 
             if payee is not None:
@@ -117,7 +118,7 @@ class TransactionRow:
         self.transaction_budget_subcategory_name = category_name
 
         db: scoped_session[Session]
-        with get_magic_session(self.budget_file) as db:
+        with get_magic_session(self.budget_file, DATABASE_DRIVER) as db:
             category = db.scalars(select(BudgetSubcategory).where(BudgetSubcategory.name == category_name)).first()
     
             if category is not None:
@@ -133,7 +134,7 @@ class TransactionRow:
         self.transaction_memo = new_memo
 
         db: scoped_session[Session]
-        with get_magic_session(self.budget_file) as db:
+        with get_magic_session(self.budget_file, DATABASE_DRIVER) as db:
             transaction = db.scalars(select(Transaction).where(Transaction.id == self.id)).first()
 
             if transaction is not None:
@@ -146,7 +147,7 @@ class TransactionRow:
         self.transaction_amount = f"{new_amount:.2f}"
 
         db: scoped_session[Session]
-        with get_magic_session(self.budget_file) as db:
+        with get_magic_session(self.budget_file, DATABASE_DRIVER) as db:
             transaction = db.scalars(select(Transaction).where(Transaction.id == self.id)).first()
 
             if transaction is not None:
@@ -159,7 +160,7 @@ class TransactionRow:
         self.transaction_cleared = checked
 
         db: scoped_session[Session]
-        with get_magic_session(self.budget_file) as db:
+        with get_magic_session(self.budget_file, DATABASE_DRIVER) as db:
             transaction = db.scalars(select(Transaction).where(Transaction.id == self.id)).first()
 
             if transaction is not None:

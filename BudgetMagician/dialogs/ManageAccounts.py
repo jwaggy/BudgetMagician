@@ -5,6 +5,9 @@ from PySide6 import QtCore
 from PySide6.QtCore import QDate, Signal, Qt, Slot
 from PySide6.QtGui import QDoubleValidator, QIcon
 from PySide6.QtWidgets import QDialog, QMessageBox
+from endstech_shared.qt_combo_box_utils import fill_combo_box, set_combo_box_by_data, get_combo_box_dict_from_list
+from endstech_shared.qt_translation_utils import translate
+from endstech_shared.sqlalchemy_utils import get_magic_session
 from sqlalchemy.orm import scoped_session, Session
 from sqlalchemy import select
 
@@ -12,9 +15,7 @@ from BudgetMagician.dialogs.ManageAccountsUi import Ui_ManageAccounts
 from BudgetMagician.magician.models import Account, Transaction, BudgetSubcategory
 from BudgetMagician.magician.queries import get_names_list
 from BudgetMagician.parameters.combobox_constants import ACCOUNT_TYPES
-from BudgetMagician.utils.combox_utils import set_combo_box_by_data, fill_combo_box, get_combo_box_dict_from_list
-from BudgetMagician.utils.db import get_magic_session
-from BudgetMagician.utils.qt import translate
+from BudgetMagician.settings import DATABASE_DRIVER
 
 
 class ManageAccounts(QDialog, Ui_ManageAccounts):
@@ -104,7 +105,7 @@ class ManageAccounts(QDialog, Ui_ManageAccounts):
         on_budget = self.budget_account_radio.isChecked()
 
         db: scoped_session[Session]
-        with get_magic_session(self.budget_file) as db:
+        with get_magic_session(self.budget_file, DATABASE_DRIVER) as db:
             budget_subcategory = db.execute(select(BudgetSubcategory.id).where(BudgetSubcategory.name == "Income")).first()
 
             if budget_subcategory is None:
@@ -141,7 +142,7 @@ class ManageAccounts(QDialog, Ui_ManageAccounts):
 
         if len(account_to_delete) > 0:
             db: scoped_session[Session]
-            with get_magic_session(self.budget_file) as db:
+            with get_magic_session(self.budget_file, DATABASE_DRIVER) as db:
                 account = db.scalars(select(Account).where(Account.name == account_to_delete)).first()
                 if account is not None:
                     db.delete(account)
