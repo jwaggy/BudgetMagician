@@ -3,12 +3,13 @@ import os
 APP_NAME = "{app_name}"
 SRC_DIR = os.path.abspath("./{app_module}")
 BUILD_DIR = os.path.abspath("./build")
+MIGRATIONS_DIR = os.path.join(os.path.dirname(BUILD_DIR), "migrations")
 
 a = Analysis(
     [os.path.join(SRC_DIR, "main.py")],
     pathex=[],
     binaries=[],
-    datas=[],
+    datas=[(MIGRATIONS_DIR, "migrations")],
     hiddenimports=[],
     hookspath=[],
     hooksconfig={},
