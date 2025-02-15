@@ -7,7 +7,7 @@ from BudgetMagician.parameters.Language import LANGUAGES
 
 MODULE_DIR = Path(__file__).resolve().parent
 
-MIGRATIONS_DIR = MODULE_DIR / "migrations"
+MIGRATIONS_DIR = MODULE_DIR.parent / "migrations"
 
 IS_DEV = False
 

@@ -7,7 +7,7 @@ readonly CI_HOME_FOLDER
 
 source "$CI_HOME_FOLDER"/../functions.sh
 
-pyinstaller_version="6.9.0"
+pyinstaller_version="6.12.0"
 
 mkdir -p "$build_dir"
 
